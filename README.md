@@ -207,14 +207,5 @@ This prototype demonstrates core ZTNA dashboard capabilities. Potential enhancem
 
 *Prototype built for demonstration purposes. Data shown is simulated.*
 
----
 
-## How to Run
-
-```bash
-cd /Users/cnemeth/ZT_TEST
-npm run dev
-```
-
-Access at: **http://localhost:3000**
 
