@@ -75,7 +75,7 @@ const Toolbar = ({ onFitView, onZoomIn, onZoomOut, onExport, onImport, nodeCount
       )}
 
       <div className="bg-white rounded-lg shadow-lg border-2 border-gray-200 p-1 flex items-center" title="Cloudflare Zero Trust">
-        <img src="https://cf-assets.www.cloudflare.com/dzlvafdwdttg/69wNwfiY5mFmgpd9eQFW6j/d5131c08085a977aa70f19e7aada3fa9/1pixel-down__1_.svg" alt="Cloudflare" className="h-8 w-auto px-2" />
+        <img src="/cloudflare-logo.png" alt="Cloudflare" className="h-8 w-auto px-2" />
       </div>
 
       <div className="bg-white rounded-lg shadow-lg border-2 border-gray-200 p-1 flex items-center">

@@ -40,6 +40,7 @@ function NetworkCanvas() {
     appView,
     collapsedGroups,
     layoutDirection,
+    currentAccountId,
     pendingFocusNodeId,
     setSelectedNode,
     clearSelection,
@@ -48,6 +49,7 @@ function NetworkCanvas() {
     onNodesChange,
     onEdgesChange,
     onConnect,
+    organizeNodes,
     toggleSummaryNodes,
     clearPendingFocusNodeId,
   } = useNetworkStore();
@@ -55,6 +57,7 @@ function NetworkCanvas() {
   const { fitView, zoomIn, zoomOut, setCenter } = useReactFlow();
   const fileInputRef = useRef(null);
   const pendingFocusRef = useRef(null);
+  const lastAutoOrganizeKeyRef = useRef(null);
   const [isNarrow, setIsNarrow] = useState(false);
 
   useEffect(() => {
@@ -91,6 +94,30 @@ function NetworkCanvas() {
   }, [appView, nodes, setSelectedNode, setCenter]);
 
   const effectiveShowSummaryNodes = appView === 'objects' ? showSummaryNodes : false;
+
+  // Keep expanded Objects layout consistent across accounts/directions.
+  // (Previously, we only auto-organized on first mount, so non-Production accounts
+  // could keep their hard-coded positions and look different.)
+  useEffect(() => {
+    if (appView !== 'objects' || effectiveShowSummaryNodes) return;
+    if (!nodes || nodes.length === 0) return;
+
+    const key = `${currentAccountId}|${layoutDirection}|${filterNodeType || ''}`;
+    if (lastAutoOrganizeKeyRef.current === key) return;
+    lastAutoOrganizeKeyRef.current = key;
+
+    organizeNodes();
+    setTimeout(() => {
+      if (filterNodeType) {
+        const filteredNodes = nodes.filter((n) => n.data.nodeType === filterNodeType);
+        if (filteredNodes.length > 0) {
+          fitView({ padding: 0.2, nodes: filteredNodes.map((n) => ({ id: n.id })), duration: 800 });
+          return;
+        }
+      }
+      fitView({ padding: 0.2, duration: 800 });
+    }, 200);
+  }, [appView, effectiveShowSummaryNodes, nodes.length, currentAccountId, layoutDirection, filterNodeType, organizeNodes, fitView, nodes]);
 
   // Center on selected node when it changes (for cross-view navigation)
   useEffect(() => {
