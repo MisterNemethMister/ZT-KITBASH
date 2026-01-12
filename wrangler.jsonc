@@ -1,5 +1,5 @@
 {
-  "name": "cloudflare-ztna-network-map",
+  "name": "zt-kitbash",
   "compatibility_date": "2026-01-09",
   "assets": {
     "directory": "./dist"
